@@ -25,7 +25,7 @@ const portfolioHoldings = [
 const topCryptos = ["BTC", "ETH", "ADA", "SOL", "XRP", "DOT", "DOGE", "SHIB", "LUNA", "AVAX"];
 
 // CoinGecko API configuration (free, no API key required)
-const COINGECKO_API = "https://api.coingecko.com/api/v3";
+const COINGECKO_API = "/.netlify/functions/coingecko-proxy";
 
 // Function to initialize the dashboard
 async function initDashboard() {
@@ -49,7 +49,7 @@ async function initDashboard() {
             } catch (error) {
                 console.error("Error updating dashboard:", error);
             }
-        }, 1000);
+        }, 15000);
         
         // Hide loading state
         hideLoadingState();
