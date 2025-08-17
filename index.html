@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crypto Investment Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Crypto Investment Dashboard</h1>
+            <div class="header-controls">
+                <div class="user-info">
+                    <div class="profile-pic-container">
+                        <img id="profile-pic" src="" alt="Profile Picture" class="profile-pic">
+                        <input type="file" id="profile-pic-upload" accept="image/*" style="display: none;">
+                        <button id="upload-btn" class="upload-btn">Change</button>
+                    </div>
+                    <span>Welcome, Investor</span>
+                </div>
+                <button id="refresh-btn" class="refresh-btn">Refresh Data</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="portfolio-summary">
+                <h2>Portfolio Overview</h2>
+                <div class="summary-cards">
+                    <div class="card">
+                        <h3>Total Balance</h3>
+                        <p class="amount">$25,430.75</p>
+                        <p class="change positive">+2.5% today</p>
+                    </div>
+                    <div class="card">
+                        <h3>24h Change</h3>
+                        <p class="amount">$620.30</p>
+                        <p class="change positive">+2.5%</p>
+                    </div>
+                    <div class="card">
+                        <h3>Best Performer</h3>
+                        <p class="amount">ETH</p>
+                        <p class="change positive">+5.2%</p>
+                    </div>
+                    <div class="card">
+                        <h3>Portfolio Value</h3>
+                        <p class="amount">$25,430.75</p>
+                        <p class="change negative">-1.2% this week</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="charts-section">
+                <div class="chart-container">
+                    <h2>Portfolio Performance</h2>
+                    <canvas id="portfolioChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Asset Allocation</h2>
+                    <canvas id="allocationChart"></canvas>
+                </div>
+            </section>
+
+            <section class="holdings-table">
+                <h2>Your Holdings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Price</th>
+                            <th>24h Change</th>
+                            <th>Holdings</th>
+                            <th>Value</th>
+                            <th>Allocation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holdings-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="market-overview">
+                <h2>Market Overview</h2>
+                <div class="search-container">
+                    <input type="text" id="crypto-search" placeholder="Search cryptocurrencies..." class="search-input">
+                </div>
+                <div class="crypto-list" id="crypto-list">
+                    <!-- Data will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
