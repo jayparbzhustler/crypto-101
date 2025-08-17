@@ -25,7 +25,7 @@ const portfolioHoldings = [
 const topCryptos = ["BTC", "ETH", "ADA", "SOL", "XRP", "DOT", "DOGE", "SHIB", "LUNA", "AVAX"];
 
 // CoinGecko API configuration (free, no API key required)
-const COINGECKO_API = "/.netlify/functions/proxy";
+const COINGECKO_API = "/.netlify/functions/coingecko";
 
 // Function to initialize the dashboard
 async function initDashboard() {
