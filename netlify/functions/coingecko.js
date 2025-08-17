@@ -10,7 +10,11 @@ exports.handler = async function(event, context) {
 
         return {
             statusCode: 200,
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            headers: {
+                "Access-Control-Allow-Origin": "*", // Allow all origins for simplicity, refine in production
+                "Content-Type": "application/json"
+            }
         };
     } catch (error) {
         console.error("Error in Netlify function:", error);
