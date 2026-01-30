@@ -2,10 +2,73 @@ document.addEventListener('DOMContentLoaded', function () {
     initDashboard();
 });
 
-function initDashboard() {
-    renderPortfolioChart();
+// User's mock holdings
+const MY_HOLDINGS = {
+    'bitcoin': 0.5572,
+    'ethereum': 6.7662,
+    'avalanche-2': 444.03,
+    'litecoin': 111.44
+};
+
+// Map CoinGecko IDs to our internal symbols/types
+const COIN_MAPPING = {
+    'bitcoin': { symbol: 'BTC', name: 'Bitcoin', type: 'btc' },
+    'ethereum': { symbol: 'ETH', name: 'Ethereum', type: 'eth' },
+    'avalanche-2': { symbol: 'AVAX', name: 'Avalanche', type: 'avax' },
+    'litecoin': { symbol: 'LTC', name: 'Litecoin', type: 'ltc' }
+};
+
+let assetsData = []; // To be populated by API
+
+async function initDashboard() {
+    try {
+        await fetchMarketData();
+    } catch (e) {
+        console.error("Failed to fetch market data, using fallback", e);
+    }
+
     renderAssets();
     renderTransactions();
+    renderPortfolioChart();
+}
+
+async function fetchMarketData() {
+    const coinIds = Object.keys(MY_HOLDINGS).join(',');
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&sparkline=true`;
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('API limit or error');
+
+    const data = await response.json();
+
+    let totalValue = 0;
+
+    // Transform API data
+    assetsData = data.map(coin => {
+        const id = coin.id;
+        const holdingAmount = MY_HOLDINGS[id] || 0;
+        const currentPrice = coin.current_price;
+        const value = holdingAmount * currentPrice;
+        totalValue += value;
+
+        return {
+            name: coin.name,
+            symbol: coin.symbol.toUpperCase(),
+            price: currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            holding: `${holdingAmount} ${coin.symbol.toUpperCase()}`,
+            change: `${coin.price_change_percentage_24h.toFixed(2)}%`,
+            isPositive: coin.price_change_percentage_24h >= 0,
+            type: COIN_MAPPING[id]?.type || 'btc',
+            sparkline: coin.sparkline_in_7d.price, // API returns { price: [...] } or [...] depending on params, check if direct array in simple response or if mapped differently. Actually coingecko sparkline=true returns sparkline_in_7d: { price: [...] }
+            rawValue: value
+        };
+    });
+
+    // Update Portfolio Header Text
+    const totalEl = document.querySelector('.total-value');
+    if (totalEl) {
+        totalEl.textContent = `$${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
 }
 
 /* --- Portfolio Chart --- */
@@ -91,48 +154,7 @@ function renderPortfolioChart() {
 }
 
 /* --- Assets List Rendering --- */
-const assetsData = [
-    {
-        name: 'Bitcoin',
-        symbol: 'BTC',
-        price: '68,000',
-        holding: '0.5572 BTC',
-        change: '+1.15%',
-        isPositive: true,
-        type: 'btc',
-        sparkline: [67000, 67200, 67100, 67500, 67800, 68000]
-    },
-    {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        price: '3,500',
-        holding: '6.7662 ETH',
-        change: '-0.23%',
-        isPositive: false,
-        type: 'eth',
-        sparkline: [3550, 3540, 3530, 3520, 3510, 3500]
-    },
-    {
-        name: 'Avalanche',
-        symbol: 'AVAX',
-        price: '32',
-        holding: '444.03 AVAX',
-        change: '+3.48%',
-        isPositive: true,
-        type: 'avax',
-        sparkline: [30, 30.5, 31, 31.2, 31.8, 32]
-    },
-    {
-        name: 'Litecoin',
-        symbol: 'LTC',
-        price: '85',
-        holding: '111.44 LTC',
-        change: '+2.09%',
-        isPositive: true,
-        type: 'ltc',
-        sparkline: [82, 83, 82.5, 84, 84.5, 85]
-    }
-];
+// assetsData is now populated via fetchMarketData
 
 function renderAssets() {
     const container = document.getElementById('assets-list');
