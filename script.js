@@ -18,13 +18,26 @@ const COIN_MAPPING = {
     'litecoin': { symbol: 'LTC', name: 'Litecoin', type: 'ltc' }
 };
 
+const FALLBACK_DATA = [
+    { name: 'Bitcoin', symbol: 'BTC', price: '68,450.00', holding: '0.5572 BTC', change: '+1.15%', isPositive: true, type: 'btc', sparkline: [67000, 67200, 68000], rawValue: 38140 },
+    { name: 'Ethereum', symbol: 'ETH', price: '3,500.00', holding: '6.7662 ETH', change: '-0.23%', isPositive: false, type: 'eth', sparkline: [3500, 3550, 3480], rawValue: 23681 },
+    { name: 'Avalanche', symbol: 'AVAX', price: '32.00', holding: '444.03 AVAX', change: '+3.48%', isPositive: true, type: 'avax', sparkline: [30, 31, 32], rawValue: 14208 },
+    { name: 'Litecoin', symbol: 'LTC', price: '85.00', holding: '111.44 LTC', change: '+2.09%', isPositive: true, type: 'ltc', sparkline: [82, 84, 85], rawValue: 9472 }
+];
+
 let assetsData = []; // To be populated by API
 
 async function initDashboard() {
     try {
         await fetchMarketData();
     } catch (e) {
-        console.error("Failed to fetch market data, using fallback", e);
+        console.warn("API fetch failed/limited. Using fallback data.", e);
+        assetsData = FALLBACK_DATA;
+
+        // Update header even with fallback
+        const total = FALLBACK_DATA.reduce((acc, curr) => acc + curr.rawValue, 0);
+        const totalEl = document.querySelector('.total-value');
+        if (totalEl) totalEl.textContent = `$${total.toLocaleString()}`;
     }
 
     renderAssets();
