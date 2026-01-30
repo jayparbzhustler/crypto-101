@@ -2,97 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Phosphor Icons (for the clean look in reference) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
-    <div class="dashboard-container">
-        <header>
-            <h1>Crypto Investment Dashboard</h1>
-            <div class="header-controls">
-                <div class="user-info">
-                    <div class="profile-pic-container">
-                        <img id="profile-pic" src="" alt="Profile Picture" class="profile-pic">
-                        <input type="file" id="profile-pic-upload" accept="image/*" style="display: none;">
-                        <button id="upload-btn" class="upload-btn">Change</button>
-                    </div>
-                    <span>Welcome, Investor</span>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <div class="logo-diamond"></div>
+                    <div class="logo-diamond"></div>
                 </div>
-                <button id="refresh-btn" class="refresh-btn">Refresh Data</button>
+                <span class="logo-text">CRYPTO</span>
             </div>
-        </header>
 
-        <main>
-            <section class="portfolio-summary">
-                <h2>Portfolio Overview</h2>
-                <div class="summary-cards">
-                    <div class="card">
-                        <h3>Total Balance</h3>
-                        <p class="amount">$25,430.75</p>
-                        <p class="change positive">+2.5% today</p>
-                    </div>
-                    <div class="card">
-                        <h3>24h Change</h3>
-                        <p class="amount">$620.30</p>
-                        <p class="change positive">+2.5%</p>
-                    </div>
-                    <div class="card">
-                        <h3>Best Performer</h3>
-                        <p class="amount">ETH</p>
-                        <p class="change positive">+5.2%</p>
-                    </div>
-                    <div class="card">
-                        <h3>Portfolio Value</h3>
-                        <p class="amount">$25,430.75</p>
-                        <p class="change negative">-1.2% this week</p>
-                    </div>
-                </div>
-            </section>
+            <nav class="main-menu">
+                <div class="menu-label">MAIN MENU</div>
+                <a href="#" class="nav-item active">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-wallet"></i>
+                    <span>Buy or Sell</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-paper-plane-right"></i>
+                    <span>Send or Requests</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-arrows-left-right"></i>
+                    <span>Convert</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-clock-counter-clockwise"></i>
+                    <span>Transactions History</span>
+                </a>
+            </nav>
 
-            <section class="charts-section">
-                <div class="chart-container">
-                    <h2>Portfolio Performance</h2>
-                    <canvas id="portfolioChart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h2>Asset Allocation</h2>
-                    <canvas id="allocationChart"></canvas>
-                </div>
-            </section>
+            <nav class="news-menu">
+                <div class="menu-label">NEWS & TRENDING</div>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-newspaper"></i>
+                    <span>News</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chart-line-up"></i>
+                    <span>Market</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-trend-up"></i>
+                    <span>Trending</span>
+                </a>
+            </nav>
 
-            <section class="holdings-table">
-                <h2>Your Holdings</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Asset</th>
-                            <th>Price</th>
-                            <th>24h Change</th>
-                            <th>Holdings</th>
-                            <th>Value</th>
-                            <th>Allocation</th>
-                        </tr>
-                    </thead>
-                    <tbody id="holdings-body">
-                        <!-- Data will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </section>
+            <nav class="settings-menu">
+                <div class="menu-label">ACCOUNTS AND SETTINGS</div>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-folder"></i>
+                    <span>Accounts</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-gear"></i>
+                    <span>Tools</span>
+                </a>
+            </nav>
+        </aside>
 
-            <section class="market-overview">
-                <h2>Market Overview</h2>
-                <div class="search-container">
-                    <input type="text" id="crypto-search" placeholder="Search cryptocurrencies..." class="search-input">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-bar">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="search-bar">
+                    <div class="category-select">
+                        <span>All Category</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <input type="text" placeholder="Search Assets, Transactions or News">
+                    <button class="search-btn"><i class="ph ph-magnifying-glass"></i></button>
                 </div>
-                <div class="crypto-list" id="crypto-list">
-                    <!-- Data will be populated by JavaScript -->
+
+                <div class="user-profile">
+                    <div class="avatar">
+                        <span>0x</span>
+                    </div>
+                    <span class="wallet-address">0xe987apztr0...</span>
                 </div>
-            </section>
+            </header>
+
+            <!-- Dashboard Content Grid -->
+            <div class="dashboard-grid">
+                <!-- Portfolio Section -->
+                <div class="portfolio-section">
+                    <div class="portfolio-card">
+                        <div class="portfolio-header">
+                            <div>
+                                <h2>Total Portfolio</h2>
+                                <div class="total-value">$94,726.50</div>
+                                <div class="total-change positive">
+                                    + $12,987 • 0,33% <i class="ph ph-arrow-up"></i>
+                                </div>
+                            </div>
+                            <div class="time-filter">
+                                <span>6 months</span>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                        </div>
+                        <div class="portfolio-chart-container">
+                            <canvas id="mainPortfolioChart"></canvas>
+                        </div>
+                        <div class="chart-labels">
+                            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                        </div>
+                    </div>
+
+                    <!-- Assets List -->
+                    <div class="assets-section">
+                        <div class="section-header">
+                            <h2>Your Assets</h2>
+                            <a href="#" class="view-all">View All Assets</a>
+                        </div>
+                        <div id="assets-list" class="assets-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar (Transactions & News) -->
+                <div class="right-sidebar">
+                    <!-- Transactions -->
+                    <div class="transactions-section">
+                        <h2>Latest Transactions</h2>
+                        <div class="date-header">May 26 - June 8</div>
+                        
+                        <div class="transactions-table-header">
+                            <span>COINS</span>
+                            <span>AMOUNT</span>
+                            <span>DATE</span>
+                        </div>
+                        
+                        <div id="transactions-list" class="transactions-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- News Widget -->
+                    <div class="news-section">
+                        <h2>From the News</h2>
+                        <div class="news-card">
+                            <img src="https://images.unsplash.com/photo-1621504450162-6667a48ad026?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="News Image">
+                            <div class="news-content">
+                                <div class="news-meta">
+                                    <span>Jun 8, 2025</span>
+                                    <span class="source">theblock.co</span>
+                                </div>
+                                <h3>Ethereum's Dencun Upgrade Boosts Network Efficiency</h3>
+                                <p>Ethereum rolled out its Dencun upgrade...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
